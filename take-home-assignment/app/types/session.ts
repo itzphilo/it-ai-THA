@@ -11,8 +11,7 @@ export interface Fields {
 export interface AdditionalQuestion {
   id: string;
   questionText: string;
-  type: string;
-  required: boolean;
+  content?: string;
 }
 
 export interface SessionData {
