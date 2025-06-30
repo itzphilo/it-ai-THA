@@ -1,0 +1,29 @@
+[
+  {
+    "sessionId": "1",
+    "fields": {
+      "name": "Philo Sanjay",
+      "email": "philosanjay5@gmail.com",
+      "phone": "9342012345",
+      "available": "yes",
+      "skills": ["JavaScript", "React", "Node.js"]
+    },
+    "additionalQuestions": [
+      {
+        "id": "noticePeriod",
+        "questionText": "What is your notice period?",
+        "content": "1 month"
+      },
+      {
+        "id": "experience",
+        "questionText": "What is your experience?",
+        "content": "2 years"
+      },
+      {
+        "id": "preferredLocation",
+        "questionText": "What is your preferred location?",
+        "content": "Chennai"
+      }
+    ]
+  }
+]
