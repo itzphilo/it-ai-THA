@@ -5,9 +5,9 @@ import { SessionData } from '../types/session';
 function Modal({ open, onClose, children }: { open: boolean; onClose: () => void; children: React.ReactNode }) {
   if (!open) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
-      <div className="bg-white text-black rounded-lg shadow-lg p-6 min-w-[320px] relative">
-        <button className="absolute top-2 right-3 text-gray-500 hover:text-black text-xl" onClick={onClose}>&times;</button>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80">
+      <div className="bg-black text-white rounded-lg shadow-lg p-6 min-w-[320px] relative border border-gray-700">
+        <button className="absolute top-2 right-3 text-gray-400 hover:text-white text-xl" onClick={onClose}>&times;</button>
         {children}
       </div>
     </div>
@@ -126,7 +126,7 @@ export default function CandidatePage() {
                     <div>
                     <h2 className="text-lg font-bold mb-4">Verify Candidate Data</h2>
                     <div className="mb-4 p-2 border rounded bg-gray-100 text-black">
-                        <pre className="overflow-x-auto text-xs whitespace-pre-wrap">{JSON.stringify(verifyData, null, 2)}</pre>
+                        <pre className="overflow-x-auto text-xs whitespace-pre-wrap bg-gray-900 text-white p-2 rounded border border-gray-700">{JSON.stringify(verifyData, null, 2)}</pre>
                     </div>
                     {mergeError && <div className="text-red-600 mb-2">{mergeError}</div>}
                     {mergeSuccess && <div className="text-green-600 mb-2">Candidate merged successfully!</div>}
@@ -170,8 +170,9 @@ export default function CandidatePage() {
                 ) : (
                     <>
                     <h2 className="text-lg font-bold mb-4">Update Missing Details</h2>
-                    <form
-                        onSubmit={async (e) => {
+      <form
+        className="space-y-4"
+        onSubmit={async (e) => {
                         e.preventDefault();
                         setSubmitting(true);
                         setSubmitError(null);
@@ -196,18 +197,18 @@ export default function CandidatePage() {
                         const key = Array.isArray(f.path) ? f.path.join('.') : String(f.path);
                         return (
                             <div key={key} className="mb-4">
-                            <label className="block text-sm font-semibold mb-1">{key.replace('fields.', '')}</label>
-                            <input
-                                className="w-full border rounded px-2 py-1"
-                                value={formState[key] || ''}
-                                onChange={e => setFormState({ ...formState, [key]: e.target.value })}
-                                required
-                            />
-                            </div>
+              <label className="block text-sm font-semibold mb-1 text-white">{key.replace('fields.', '')}</label>
+              <input
+                className="w-full border border-gray-700 rounded px-2 py-1 bg-black text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none"
+                value={formState[key] || ''}
+                onChange={e => setFormState({ ...formState, [key]: e.target.value })}
+                required
+              />
+            </div>
                         );
                         })}
                         {submitError && <div className="text-red-600 mb-2">{submitError}</div>}
-                        <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded" disabled={submitting}>
+                        <button type="submit" className="bg-black hover:bg-grey-700 border border-gray-700 text-white px-4 py-2 rounded" disabled={submitting}>
                         {submitting ? 'Preparing...' : 'Review & Merge'}
                         </button>
                     </form>

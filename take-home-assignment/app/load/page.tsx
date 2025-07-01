@@ -53,6 +53,13 @@ export default function LoadPage() {
     <div className="flex flex-col items-center p-8">
       <h1 className="text-2xl font-bold">Load Candidates</h1>
       <input
+        style={{
+          backgroundColor: "#000",
+          color: "#fff",
+          padding: "0.5rem",
+          borderRadius: "0.25rem",
+          border: "1px solid #333",
+        }}
         type="file"
         accept=".json"
         onChange={handleFileChange}
