@@ -26,6 +26,18 @@ function isErrorResponse(details: DetailsType): details is ErrorResponse {
   return typeof details === 'object' && details !== null && 'error' in details;
 }
 
+function downloadJSON(data: any, filename: string) {
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
 export default function CandidatePage() {
   const [sessionId, setSessionId] = useState('');
   const [details, setDetails] = useState<DetailsType | null>(null);
@@ -145,10 +157,35 @@ export default function CandidatePage() {
                             });
                             if (!res.ok) throw new Error('Failed to merge candidate');
                             setMergeSuccess(true);
+                            if (verifyData && verifyData.fields) {
+                              const correctedData: Record<string, any> = {};
+                              Object.entries(verifyData.fields).forEach(([k, v]) => {
+                                if (Array.isArray(v)) {
+                                  correctedData[k] = v.join(', ');
+                                } else {
+                                  correctedData[k] = v;
+                                }
+                              });
+                              // Add additionalQuestions fields if present
+                              if (Array.isArray(verifyData.additionalQuestions)) {
+                                for (const q of verifyData.additionalQuestions) {
+                                  if (q.id === 'noticePeriod') correctedData.noticePeriod = q.content;
+                                  if (q.id === 'experience') correctedData.experience = q.content;
+                                  if (q.id === 'preferredLocation') correctedData.preferredLocation = q.content;
+                                }
+                              }
+                              const downloadObj = {
+                                sessionId: verifyData.sessionId || sessionId,
+                                verified: true,
+                                correctedData,
+                                timestamp: new Date().toISOString()
+                              };
+                              downloadJSON(downloadObj, `${verifyData.sessionId || sessionId}_verified.json`);
+                            }
                             setTimeout(() => {
-                            setModalOpen(false);
-                            setVerifyData(null);
-                            handleFetch();
+                              setModalOpen(false);
+                              setVerifyData(null);
+                              handleFetch();
                             }, 1200);
                         } catch (err: any) {
                             setMergeError(err.message || 'Unknown error');
