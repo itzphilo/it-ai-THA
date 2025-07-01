@@ -1,5 +1,19 @@
 # Interain AI Take Home Assignment
 
+> **TODO:** Implement SHADCN UI for a more modern and consistent UI experience.
+
+## Problem Solving Approach
+
+This project was designed with a strong emphasis on data integrity, type safety, and maintainability. The core approach is:
+
+- **Single Point of Data Mutation:** All candidate creation, merging, and updates go through one API endpoint (`/api/candidates/list`), ensuring that all data passes through centralized validation and merging logic. No other endpoint is allowed to write to the data file.
+- **Strict Validation:** Both frontend and backend use TypeScript for type safety. The backend additionally uses Zod schemas to validate all candidate data, ensuring that only well-formed, complete records are accepted.
+- **Clear Separation of Concerns:** Fetching/validation (`/api/candidate/[id]/get-details`) is strictly separated from mutation (`/api/candidates/list`), making the codebase easier to reason about and less error-prone.
+- **User Workflow:** The UI guides users through fetching, validating, and updating candidate data, always enforcing required fields and correct formats before allowing any merge.
+- **Type Error Prevention:** All potentially undefined or nullable data is handled with runtime checks and type guards, preventing runtime exceptions and satisfying TypeScript's strict null checks.
+
+This architecture ensures robust, consistent, and safe handling of candidate data throughout the application.
+
 This project is a Next.js application for managing candidate data. It features a RESTful API for candidate listing, merging, and updating, with a single point of data entry for all candidate operations.
 
 ## API Overview
@@ -38,10 +52,14 @@ This project is a Next.js application for managing candidate data. It features a
 
 ## Data Flow and Single Point of Entry
 
-- All candidate data creation, merging, and updating is handled via the `/api/candidates/list` POST endpoint. No other endpoint writes to the data file. This ensures that:
-  - All candidate updates go through consistent validation and merging logic.
-  - There is a single source of truth for candidate data (`app/data/candidates.json`).
-- The `/api/candidate/[id]/get-details` endpoint is used only for fetching and validating a single candidate, not for updating.
+> **IMPORTANT**
+> 
+> **All candidate data creation, merging, and updating is handled via the `/api/candidates/list` POST endpoint. _No other endpoint writes to the data file._**
+> 
+> - All candidate updates go through consistent validation and merging logic.
+> - There is a single source of truth for candidate data (`app/data/candidates.json`).
+> 
+> **The `/api/candidate/[id]/get-details` endpoint is used _only_ for fetching and validating a single candidate, _not_ for updating.**
 
 ## Frontend Flow
 
