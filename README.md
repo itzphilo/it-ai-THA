@@ -1,6 +1,8 @@
 # Interain AI Take Home Assignment
 
 > **TODO:** Implement SHADCN UI for a more modern and consistent UI experience.
+> 
+> **TODO:** Implementation of a timewise file change log is needed.
 
 ## Problem Solving Approach
 
@@ -13,6 +15,16 @@ This project was designed with a strong emphasis on data integrity, type safety,
 - **Type Error Prevention:** All potentially undefined or nullable data is handled with runtime checks and type guards, preventing runtime exceptions and satisfying TypeScript's strict null checks.
 
 This architecture ensures robust, consistent, and safe handling of candidate data throughout the application.
+
+---
+
+## Data Storage: Input and Output
+
+- All candidate data is managed in a single file: `candidates.json`, which serves as the application's **input.json** and is the single source of truth for all candidate information.
+- After candidate verification and merge, an **output.json** (containing the verified/corrected candidate data and timestamp) is generated and made available for download on the client side.
+- **Note:** The output.json is **not** stored on the server. This is a deliberate decision, as storing many output JSONs on the server is not advised for scalability and maintainability. Each user can download their own output.json after verification.
+
+---
 
 This project is a Next.js application for managing candidate data. It features a RESTful API for candidate listing, merging, and updating, with a single point of data entry for all candidate operations.
 
