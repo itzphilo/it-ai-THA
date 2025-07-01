@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import candidates from '../../../data/candidates.json';
-
+import { writeFile } from 'fs/promises';
+  
 const ITEMS_PER_PAGE = 10;
 
 export async function GET(request: Request) {
@@ -19,7 +20,10 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  const requestData = await request.json();
+  const data = JSON.stringify([...candidates, ...requestData], null, 2);
+  await writeFile('app/data/candidates.json', data, { encoding: 'utf-8' });
   return NextResponse.json({
-    message: 'POST method is not implemented.',
-  });
+    message: 'Candidates list updated.',
+  }, { status: 200 });
 }
